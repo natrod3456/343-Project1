@@ -72,6 +72,8 @@ int main(int argc, char *argv[]){
 			if(choice == 4)
 				break;
 			if(choice == 1){
+				write_file(boardgame,rows,columns);
+				printf("File saved!\n");
 				//save file not working
 				//int bytes = sizeof(boardgame);
 				//int *file
@@ -176,11 +178,38 @@ void checkBoard(int row, int column, int **board){
 	printf("There have been %d revival(s)\n", revivals);
 }	
 
-int read_file( char* filename, char **buffer ){
+int read_file(int **board, int row, int column){
+	FILE *fp;
+	int i;
+	int rows = 0;
+	int columns = 0;
+	//if(fp = fopen("save","rb") == NULL){
+	//	printf("file could not be opened\n");
+	//}
+	//while((i = fgetc(fp))!= EOF){
+	//	if(i == '\n')
+	//		rows++;
+	//}
+	//while((i = fgetc(fp))!= EOF){
+	//	if(i != '\n')
+	//		column++;
+	//}
+	//fread(board,sizeof(int), row*column,fp);
+	//fclose(fp);
 	return 0;
 }
 
-int write_file( char* filename, char **buffer, int size){
-	memcpy(filename,buffer,size);
+int write_file(int **board, int row, int column){
+	FILE *fp;
+	fp = fopen("save","wb");
+	//fwrite(board,sizeof(int), row*column, fp);
+	for(int i = 0; i < row; i++){
+		for(int j = 0; j < column; j++){
+			fprintf(fp,"%d",board[i][j]);
+		}
+		if(i != row-1)
+			fprintf(fp,"\n");
+	}
+	fclose(fp);
 	return 0;
 }

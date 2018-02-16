@@ -2,10 +2,10 @@
 #define GAME_H
 
 //read file
-int read_file( char* filename, char **buffer );
+int read_file(int **board, int row, int column);
 
 //write to file
-int write_file( char* filename, char **buffer, int size);
+int write_file(int **board, int row, int column);
 
 //starts and prints new game board
 void newGame(int rows, int columns, int **board);
