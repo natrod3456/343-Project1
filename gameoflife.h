@@ -2,7 +2,7 @@
 #define GAME_H
 
 //read file
-int read_file(int **board, int row, int column);
+int read_file(int **board);
 
 //write to file
 int write_file(int **board, int row, int column);

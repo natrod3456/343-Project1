@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
 	int decision;
 	int rows;
 	int columns;
-	int* file;
+	int **loadgame;
 	
 	printf("Welcome to the Game of Life!\n");
 	printf("Live cells are shown as 1's\n");
@@ -24,9 +24,9 @@ int main(int argc, char *argv[]){
 	
 	if(decision == 1){
 		printf("Selected to load a file...\n");
-		//read_file( char* filename, char **buffer );
+		read_file(loadgame);
 		//not working
-		exit(1);
+		//exit(1);
 	}
 	else if(decision == 2){
 		printf("Selected to start new game...\n");
@@ -74,10 +74,6 @@ int main(int argc, char *argv[]){
 			if(choice == 1){
 				write_file(boardgame,rows,columns);
 				printf("File saved!\n");
-				//save file not working
-				//int bytes = sizeof(boardgame);
-				//int *file
-				//write_file(file,boardgame,bytes);
 			}
 			if(choice ==2){
 				//load not working
@@ -178,31 +174,52 @@ void checkBoard(int row, int column, int **board){
 	printf("There have been %d revival(s)\n", revivals);
 }	
 
-int read_file(int **board, int row, int column){
+int read_file(int **board){
 	FILE *fp;
 	int i;
-	int rows = 0;
-	int columns = 0;
-	//if(fp = fopen("save","rb") == NULL){
-	//	printf("file could not be opened\n");
-	//}
-	//while((i = fgetc(fp))!= EOF){
-	//	if(i == '\n')
-	//		rows++;
-	//}
-	//while((i = fgetc(fp))!= EOF){
-	//	if(i != '\n')
-	//		column++;
-	//}
-	//fread(board,sizeof(int), row*column,fp);
-	//fclose(fp);
+	int count;
+	int rows;
+	if((fp = fopen("save","rb")) == NULL){
+		printf("You need to save a file first before loading one\n");
+	}
+	while((i = fgetc(fp))!= EOF){
+		if(i == '\n')
+			rows++;
+		else
+			count++;
+	}
+	rows++;
+	int columns = count/rows;
+
+	board = malloc(rows * sizeof(int *));
+	for(int j = 0; j < rows; j++){
+			board[j] = malloc(columns * sizeof(int));
+		}
+		
+	for(int x = 0; x < rows; x++){
+		for(int y = 0; y < columns; y++){
+			fscanf(fp, "%d", &board[x][y]);
+		}
+	}
+	for(int s = 0; s < rows; s++){
+			for(int k = 0; k < columns; k++){
+				printf("%d", board[s][k]);
+		}
+		printf("\n");
+		}
+	fclose(fp);
+	/**
+	** freeing arrays in function since function does not work
+	**/
+	for(int q = 0; q < rows; q++)
+			free((void *)board[q]);
+		free((void *)board);
 	return 0;
 }
 
 int write_file(int **board, int row, int column){
 	FILE *fp;
 	fp = fopen("save","wb");
-	//fwrite(board,sizeof(int), row*column, fp);
 	for(int i = 0; i < row; i++){
 		for(int j = 0; j < column; j++){
 			fprintf(fp,"%d",board[i][j]);
